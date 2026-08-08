@@ -35,9 +35,18 @@ jobs:
         $dir = (Get-Command win_bison).Source | Split-Path
         Copy-Item "$dir\win_bison.exe" "$dir\bison.exe"
         Copy-Item "$dir\win_flex.exe" "$dir\flex.exe"
+    - name: prefetch zlib/libpng sources
+      run: |
+        New-Item -ItemType Directory -Force deps | Out-Null
+        curl.exe -L -o deps\zlib.tar.xz   https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.xz
+        curl.exe -L -o deps\libpng.tar.xz https://download.sourceforge.net/libpng/libpng-1.6.58.tar.xz
+        tar -xf deps\zlib.tar.xz   -C deps
+        tar -xf deps\libpng.tar.xz -C deps
     - name: 'build'
       run: |
-        cmake --preset msvc-static-${{ matrix.target }}
+        cmake --preset msvc-static-${{ matrix.target }} `
+          -DFETCHCONTENT_SOURCE_DIR_ZLIB=${{ github.workspace }}\deps\zlib-1.3.2 `
+          -DFETCHCONTENT_SOURCE_DIR_PNG=${{ github.workspace }}\deps\libpng-1.6.58
         cmake --build --preset msvc-static-${{ matrix.target }}-relmin
     - name: 'release'
       run: |
