@@ -27,10 +27,14 @@ jobs:
         submodules: recursive
         fetch-tags: true
         fetch-depth: 0
-    - name: install bison
+    - name: install bison/flex
       run: |
-        choco install bison
-        echo "C:\Program Files\GnuWin32\bin" >> $GITHUB_PATH
+        choco install winflexbison3
+    - name: alias bison/flex
+      run: |
+        $dir = (Get-Command win_bison).Source | Split-Path
+        Copy-Item "$dir\win_bison.exe" "$dir\bison.exe"
+        Copy-Item "$dir\win_flex.exe" "$dir\flex.exe"
     - name: 'build'
       run: |
         cmake --preset msvc-static-${{ matrix.target }}
