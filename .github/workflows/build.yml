@@ -22,7 +22,11 @@ jobs:
         target: [ x64, x86 ]
     steps:
     - name: checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
+      with:
+        submodules: recursive
+        fetch-tags: true
+        fetch-depth: 0
     - name: 'build'
       run: |
         cmake --preset msvc-static-${{ matrix.target }}
