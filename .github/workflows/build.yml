@@ -27,6 +27,10 @@ jobs:
         submodules: recursive
         fetch-tags: true
         fetch-depth: 0
+    - name: install bison
+      run: |
+        choco install bison
+        echo "C:\Program Files\GnuWin32\bin" >> $GITHUB_PATH
     - name: 'build'
       run: |
         cmake --preset msvc-static-${{ matrix.target }}
