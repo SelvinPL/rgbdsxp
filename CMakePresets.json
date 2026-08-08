@@ -1,0 +1,95 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "msvc-static-x86",
+			"displayName": "rgbdsxp - XP static (x86 / Win32)",
+			"description": "Fully-static, XP-compatible tools",
+			"architecture": "Win32",
+			"binaryDir": "${sourceDir}/build/x86",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/x86"
+			}
+		},
+		{
+			"name": "msvc-static-x64",
+			"displayName": "rgbdsxp - XP static (x64)",
+			"description": "Fully-static, XP-compatible tools",
+			"architecture": "x64",
+			"binaryDir": "${sourceDir}/build/x64",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/x64"
+			}
+		},
+		{
+			"name": "ninja-x64",
+			"displayName": "rgbdsxp - XP static (x64, Ninja + MSVC)",
+			"description": "Run from an x64 Native Tools Command Prompt so cl/link/ml64 are on PATH",
+			"generator": "Ninja Multi-Config",
+			"binaryDir": "${sourceDir}/build/ninja-x64",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/ninja-x64"
+			}
+		},
+		{
+			"name": "ninja-x86",
+			"displayName": "rgbdsxp - XP static (x86, Ninja + MSVC)",
+			"description": "Run from an x86 Native Tools Command Prompt so cl/link/ml are on PATH",
+			"generator": "Ninja Multi-Config",
+			"binaryDir": "${sourceDir}/build/ninja-x86",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/out/ninja-x86"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "msvc-static-x86",
+			"displayName": "rgbdsxp - XP static (x86) - Release",
+			"configurePreset": "msvc-static-x86",
+			"configuration": "Release"
+		},
+		{
+			"name": "msvc-static-x64",
+			"displayName": "rgbdsxp - XP static (x64) - Release",
+			"configurePreset": "msvc-static-x64",
+			"configuration": "Release"
+		},
+		{
+			"name": "msvc-static-x86-relmin",
+			"displayName": "rgbdsxp - XP static (x86) - RelMin (speed + size strip)",
+			"configurePreset": "msvc-static-x86",
+			"configuration": "RelMin"
+		},
+		{
+			"name": "msvc-static-x64-relmin",
+			"displayName": "rgbdsxp - XP static (x64) - RelMin (speed + size strip)",
+			"configurePreset": "msvc-static-x64",
+			"configuration": "RelMin"
+		},
+		{
+			"name": "ninja-x64",
+			"displayName": "Ninja x64 - Release",
+			"configurePreset": "ninja-x64",
+			"configuration": "Release"
+		},
+		{
+			"name": "ninja-x64-relmin",
+			"displayName": "Ninja x64 - RelMin",
+			"configurePreset": "ninja-x64",
+			"configuration": "RelMin"
+		},
+		{
+			"name": "ninja-x86",
+			"displayName": "Ninja x86 - Release",
+			"configurePreset": "ninja-x86",
+			"configuration": "Release"
+		},
+		{
+			"name": "ninja-x86-relmin",
+			"displayName": "Ninja x86 - RelMin",
+			"configurePreset": "ninja-x86",
+			"configuration": "RelMin"
+		}
+	]
+}

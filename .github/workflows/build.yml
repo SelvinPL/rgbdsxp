@@ -1,0 +1,35 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    name: ${{ matrix.target }}
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        target: [ x64, x86 ]
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+    - name: 'build'
+      run: |
+        cmake --preset msvc-static-${{ matrix.target }}
+        cmake --build --preset msvc-static-${{ matrix.target }}-relmin
+    - name: 'release'
+      run: |
+        Compress-Archive -Path build\${{ matrix.target }}\bin\*.exe -Destination rgbds-${{ matrix.target }}.zip
+        gh release upload ${{github.event.release.tag_name}} rgbdsxp-${{ matrix.target }}.zip
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
