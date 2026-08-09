@@ -17,6 +17,12 @@ set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 
 option(RGBDSXP_RELMIN_NO_EH "RelMin: compile C++ without exception handling (opt-in)" OFF)
 if(MSVC)
+  foreach(lang C CXX)
+    if(NOT CMAKE_${lang}_FLAGS MATCHES "/nologo")
+      string(APPEND CMAKE_${lang}_FLAGS " /nologo")
+    endif()
+  endforeach()
+
   set(_relmin "/Gw /Gy /Oi /GS- /fp:except- /guard:cf-")
   set(_relmin_cxx "${_relmin} /GR-")
   if(RGBDSXP_RELMIN_NO_EH)
@@ -58,6 +64,22 @@ if(RGBDSXP_GIT)
 endif()
 
 add_custom_target(rgbdsxp ALL)
+
+include(FetchContent)
+foreach(_dep_pair "ZLIB=zlib" "PNG=libpng")
+  string(REPLACE "=" ";" _dep_pair "${_dep_pair}")
+  list(GET _dep_pair 0 _dep_name)
+  list(GET _dep_pair 1 _dep_dir)
+  if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${_dep_dir}/CMakeLists.txt")
+    message(FATAL_ERROR
+      "The ${_dep_dir} submodule is missing. Initialise it first:\n"
+      "  git submodule update --init --recursive")
+  endif()
+  FetchContent_Declare(${_dep_name}
+                       SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${_dep_dir}"
+                       EXCLUDE_FROM_ALL
+                       OVERRIDE_FIND_PACKAGE)
+endforeach()
 
 set(CMAKE_DISABLE_FIND_PACKAGE_Git ON)
 add_subdirectory(rgbds EXCLUDE_FROM_ALL)
