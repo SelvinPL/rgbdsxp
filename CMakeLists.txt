@@ -119,5 +119,3 @@ foreach(tool IN ITEMS rgbasm rgblink rgbfix rgbgfx)
     add_dependencies(rgbdsxp ${tool})
   endif()
 endforeach()
-
-message(STATUS "rgbdsxp: building rgbds ${RGBDS_VERSION_FROM_GIT} -> ${RGBDSXP_BIN}")
