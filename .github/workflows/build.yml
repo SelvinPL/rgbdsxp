@@ -43,7 +43,7 @@ jobs:
         cmake --build --preset ninja-${{ matrix.target }}-relmin
     - name: 'release'
       run: |
-        Compress-Archive -Path build\${{ matrix.target }}\bin\*.exe -Destination rgbdsxp-${{ matrix.target }}.zip
+        Compress-Archive -Path build\ninja-${{ matrix.target }}\bin\*.exe -Destination rgbdsxp-${{ matrix.target }}.zip
         gh release upload ${{github.event.release.tag_name}} rgbdsxp-${{ matrix.target }}.zip
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
